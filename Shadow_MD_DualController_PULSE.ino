@@ -2399,7 +2399,7 @@ void ps3ToggleSettings(PS3BT* myPS3 = PS3NavFoot)
                 #ifdef SHADOW_VERBOSE      
                   output += "Over Speed is now: OFF";
                 #endif
-              Serial3.print("Over Speed is now: OFF");
+              Serial3.print("Over Speed is now: OFF ");
           }  
        }
     }
