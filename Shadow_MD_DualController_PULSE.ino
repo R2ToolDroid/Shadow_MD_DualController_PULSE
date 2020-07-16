@@ -1903,7 +1903,7 @@ void loop()
     {
       //We have a fault condition that we want to ensure that we do NOT process any controller data!!!
       printOutput();
-      Serial3.print("SHADOW_ERROR");
+      Serial1.print("SHADOW_ERROR\r");
       return;
     }
     
@@ -2351,8 +2351,8 @@ void ps3ToggleSettings(PS3BT* myPS3 = PS3NavFoot)
         footDriveSpeed = 0;
         Mpower.detach();
         Mdir.detach();
-        Serial3.print("Disabling the DriveStick\r\n ");
-        
+        Serial1.print("DISDR\r");
+        Serial3.print("Disabling the DriveStick\r\n");
     }
     
     if(myPS3->getButtonPress(PS) && myPS3->getButtonClick(CIRCLE))
@@ -2365,7 +2365,8 @@ void ps3ToggleSettings(PS3BT* myPS3 = PS3NavFoot)
         isStickEnabled = true;
         Mpower.attach(63); /// A9 MEGA Leg Motor A
         Mdir.attach(62); /// A8 MEGA Leg Motor B
-        Serial3.print("Enabling the DriveStick\r\n ");
+        Serial1.print("ENDR\r");
+        Serial3.print("Enabling the DriveStick\r\n");
     }
     
     // Enable and Disable Overspeed
@@ -2392,6 +2393,7 @@ void ps3ToggleSettings(PS3BT* myPS3 = PS3NavFoot)
                   output += "Over Speed is now: ON";
                 #endif
                 Serial3.print("Over Speed is now: ON");
+                Serial1.print("OVSPON\r");
           } else
           {      
                 overSpeedSelected = false;
@@ -2400,6 +2402,7 @@ void ps3ToggleSettings(PS3BT* myPS3 = PS3NavFoot)
                   output += "Over Speed is now: OFF";
                 #endif
               Serial3.print("Over Speed is now: OFF ");
+              Serial1.print("OVSPOFF\r");
           }  
        }
     }
@@ -2420,6 +2423,7 @@ void ps3ToggleSettings(PS3BT* myPS3 = PS3NavFoot)
           #endif
 
           Serial3.print("Dome Automation OFF\r\n");
+          Serial1.print("DOMEAOFF\r");
     } 
 
     if(myPS3->getButtonPress(L2) && myPS3->getButtonClick(CIRCLE))
@@ -2430,6 +2434,7 @@ void ps3ToggleSettings(PS3BT* myPS3 = PS3NavFoot)
             output += "Dome Automation On\r\n";
           #endif
           Serial3.print("Dome Automation ON\r\n");
+          Serial1.print("DOMEAON\r");
     } 
 
 }
@@ -2811,15 +2816,18 @@ void marcDuinoButtonPush(int type, int MD_func, int MP3_num, int LD_type, String
              break;
              
           case 183:
-             Serial1.print("$88\r");
+             //Serial1.print("$88\r");
+             Serial1.print("M23\r");
              break;
           
           case 184:
-             Serial1.print("$89\r");
+            // Serial1.print("$89\r");
+             Serial1.print("M32\r");
              break;
 
           case 185:
-             Serial1.print("$810\r");
+             //Serial1.print("$810\r");
+             Serial1.print("LOOK\r");
              break;
              
           case 186:
@@ -5602,6 +5610,7 @@ void onInitPS3NavFoot()
           #endif
 
           Serial3.print( "NAV controller connected.\r\n");
+          Serial1.print( "NAV controller connected.\r\n");
           
           mainControllerConnected = true;
           WaitingforReconnect = true;
