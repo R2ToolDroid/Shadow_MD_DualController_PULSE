@@ -1787,6 +1787,7 @@ BTD Btd(&Usb);
 PS3BT *PS3NavFoot=new PS3BT(&Btd);
 PS3BT *PS3NavDome=new PS3BT(&Btd);
 
+Servo trig; // Servo Trigger 232 system
 Servo DomeServo;  // create servo object to control a servo
 Servo Mpower; ///Motor Power
 Servo Mdir;  ////Motor Directio
@@ -1870,10 +1871,13 @@ void setup()
     SyR->setTimeout(20);      //DMB:  How low can we go for safety reasons?  multiples of 100ms
     SyR->stop(); 
 
+    trig.attach(60); /// A6 Trigger 232 
     
     Mpower.attach(63); /// A9 MEGA Leg Motor A
     Mdir.attach(62); /// A8 MEGA Leg Motor B
     DomeServo.attach(61); /// A7 MEGA ??
+
+    
 
     DomeServo.write(90);
     //Setup for Serial1:: MarcDuino Dome Control Board
@@ -2021,13 +2025,13 @@ boolean ps3FootMotorDrive(PS3BT* myPS3 = PS3NavFoot)
           {
 
             stickSpeed = (map(joystickPosition, 0, 255, -drivespeed2, drivespeed2));  
-            pulseSpeed = (map(joystickPosition, 0, 255, 0, 180));  
+            pulseSpeed = (map(joystickPosition, 0, 255, 110, 70));  
             
           } else 
           {
             
             stickSpeed = (map(joystickPosition, 0, 255, -drivespeed1, drivespeed1));
-            pulseSpeed = (map(joystickPosition, 0, 255, 60, 120));  
+            pulseSpeed = (map(joystickPosition, 0, 255, 100, 80));  
             
           }          
 
@@ -2069,7 +2073,13 @@ boolean ps3FootMotorDrive(PS3BT* myPS3 = PS3NavFoot)
                         output += footDriveSpeed;
                         output += "\nStick Speed: ";
                         output += stickSpeed;
+
+                        output += "\nPulse Speed: ";
+                        output += pulseSpeed;
+                        
                         output += "\n\r";
+
+                        
                     #endif
                     
                 } else
@@ -2094,6 +2104,11 @@ boolean ps3FootMotorDrive(PS3BT* myPS3 = PS3NavFoot)
                         output += footDriveSpeed;
                         output += "\nStick Speed: ";
                         output += stickSpeed;
+
+                        output += "\nPulse Speed: ";
+                        output += pulseSpeed;
+
+                        
                         output += "\n\r";
                     #endif
                       
@@ -2113,6 +2128,9 @@ boolean ps3FootMotorDrive(PS3BT* myPS3 = PS3NavFoot)
                         output += footDriveSpeed;
                         output += "\nStick Speed: ";
                         output += stickSpeed;
+
+                        output += "\nPulse Speed: ";
+                        output += pulseSpeed;
                         output += "\n\r";
                     #endif
                     
@@ -2142,7 +2160,7 @@ boolean ps3FootMotorDrive(PS3BT* myPS3 = PS3NavFoot)
           }
 
 
-          pulseTurn = (map(myPS3->getAnalogHat(LeftHatX), 0, 255, 0, 180));
+          pulseTurn = (map(myPS3->getAnalogHat(LeftHatX), 0, 255, 80, 100));
           
           currentMillis = millis();
           
@@ -2157,6 +2175,10 @@ boolean ps3FootMotorDrive(PS3BT* myPS3 = PS3NavFoot)
                     output += footDriveSpeed;
                     output += "\nTurnnum: ";              
                     output += turnnum;
+
+                    output += "\nPulse Turn: ";
+                        output += pulseTurn;
+                    
                     output += "\nTime of command: ";              
                     output += millis();
                   #endif
@@ -2261,7 +2283,7 @@ void rotateDome(int domeRotationSpeed, String mesg)
             
             isDomeMotorStopped = false;
 
-            int DomePulseSpeed = map(domeRotationSpeed,-100,100,0,180);
+            int DomePulseSpeed = map(domeRotationSpeed,-100,100,180,0);
             
             #ifdef SHADOW_VERBOSE      
                 output += "Dome rotation speed: ";
@@ -2818,6 +2840,13 @@ void marcDuinoButtonPush(int type, int MD_func, int MP3_num, int LD_type, String
           case 183:
              //Serial1.print("$88\r");
              Serial1.print("M23\r");
+
+             ///M23 Trigger
+
+            trig.write(160);
+            delay(200);
+            trig.write(90); 
+             
              break;
           
           case 184:
