@@ -1877,7 +1877,8 @@ void setup()
     Mdir.attach(62); /// A8 MEGA Leg Motor B
     DomeServo.attach(61); /// A7 MEGA ??
 
-    
+    pinMode(59, OUTPUT); /// MODE Trigger Domecontrol
+    digitalWrite(59, HIGH); 
 
     DomeServo.write(90);
     //Setup for Serial1:: MarcDuino Dome Control Board
@@ -2458,6 +2459,24 @@ void ps3ToggleSettings(PS3BT* myPS3 = PS3NavFoot)
           Serial3.print("Dome Automation ON\r\n");
           Serial1.print("DOMEAON\r");
     } 
+
+
+    ///DOME CONTROL SELECT///
+    if(myPS3->getButtonPress(L2) && myPS3->getButtonClick(L3))
+    {
+          
+
+          #ifdef SHADOW_DEBUG
+            output += "Dome MODE plus \r\n";
+          #endif
+          
+          digitalWrite(59, LOW); 
+          delay(1000);
+          digitalWrite(59, HIGH); 
+    } 
+
+
+    
 
 }
 
