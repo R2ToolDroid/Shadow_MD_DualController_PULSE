@@ -1,6 +1,6 @@
 ARDUINO_DIR = /usr/share/arduino
 ARDUINO_PORT = /dev/ttyACM1
-ARDUINO_LIBS = PS3BT usbhub Servo 
+ARDUINO_LIBS = USB_Host_Shield Servo 
 
 USER_LIB_PATH = /home/pi/sketchbook/libraries
 # BOARD_TAG = uno
