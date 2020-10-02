@@ -3527,7 +3527,8 @@ void marcDuinoFoot()
         #ifdef SHADOW_VERBOSE      
              output += "FOOT: btnLeft";
         #endif
-       
+
+        Serial1.print("*RC01\r");
         return;
        }
         
