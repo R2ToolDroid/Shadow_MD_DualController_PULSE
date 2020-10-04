@@ -165,7 +165,7 @@ void setup()
     {
         Serial.print(F("\r\nOSC did not start"));
         
-       // while (1); //halt
+        while (1); //halt
         
     }
     
@@ -782,8 +782,7 @@ void ps3ToggleSettings(PS3BT* myPS3 = PS3NavFoot)
 
     ///DOME CONTROL SELECT///
     if(myPS3->getButtonPress(L2) && myPS3->getButtonClick(L3))
-    {
-          
+    {        
 
           #ifdef SHADOW_DEBUG
             output += "Dome MODE plus \r\n";
@@ -792,6 +791,37 @@ void ps3ToggleSettings(PS3BT* myPS3 = PS3NavFoot)
           digitalWrite(59, LOW); 
           delay(1000);
           digitalWrite(59, HIGH); 
+
+          mode = mode+1;  
+          
+         if (mode > 3) { mode = 0;}
+         
+          switch (mode) {
+                  case 0:
+                  // Statement(s)
+                  Serial2.print("mode0\r");
+                  break;
+                  case 1:
+                  Serial2.print("mode1\r");
+                  // Statement(s)
+                  break;
+                  case 2:
+                  Serial2.print("mode2\r");
+                  // Statement(s)
+                  break;
+                  case 3:
+                  Serial2.print("mode3\r");
+                  // Statement(s)
+                  break;
+                  
+                  default:
+                  // Statement(s)
+                  break; // Wird nicht benötigt, wenn Statement(s) vorhanden sind
+                }
+         
+
+
+          
     } 
 
 
@@ -1848,6 +1878,9 @@ void marcDuinoFoot()
         #endif
 
         Serial1.print("*RC01\r");
+
+        Serial2.print("HUMAN HOLO\r");
+        
         return;
        }
         
