@@ -788,9 +788,9 @@ void ps3ToggleSettings(PS3BT* myPS3 = PS3NavFoot)
             output += "Dome MODE plus \r\n";
           #endif
           
-          digitalWrite(59, LOW); 
-          delay(1000);
-          digitalWrite(59, HIGH); 
+          //digitalWrite(59, LOW); 
+          //delay(1000);
+          //digitalWrite(59, HIGH); 
 
           mode = mode+1;  
           
