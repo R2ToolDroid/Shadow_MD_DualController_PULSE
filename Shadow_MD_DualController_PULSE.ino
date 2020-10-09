@@ -736,6 +736,7 @@ void ps3ToggleSettings(PS3BT* myPS3 = PS3NavFoot)
                 #endif
                 //Serial3.print("Over Speed is now: ON");
                 Serial2.print("OVSPON\r");
+                Serial1.print("$12\r");
           } else
           {      
                 overSpeedSelected = false;
@@ -745,6 +746,7 @@ void ps3ToggleSettings(PS3BT* myPS3 = PS3NavFoot)
                 #endif
               //Serial3.print("Over Speed is now: OFF ");
               Serial2.print("OVSPOFF\r");
+              Serial1.print("$13\r");
           }  
        }
     }
@@ -766,6 +768,7 @@ void ps3ToggleSettings(PS3BT* myPS3 = PS3NavFoot)
 
           //Serial3.print("Dome Automation OFF\r\n");
           Serial2.print("DOMEAOFF\r");
+          Serial1.print("$12\r");
     } 
 
     if(myPS3->getButtonPress(L2) && myPS3->getButtonClick(CIRCLE))
@@ -777,6 +780,7 @@ void ps3ToggleSettings(PS3BT* myPS3 = PS3NavFoot)
           #endif
           //Serial3.print("Dome Automation ON\r\n");
           Serial2.print("DOMEAON\r");
+          Serial1.print("$13\r");
     } 
 
 
@@ -800,17 +804,21 @@ void ps3ToggleSettings(PS3BT* myPS3 = PS3NavFoot)
                   case 0:
                   // Statement(s)
                   Serial2.print("mode0\r");
+                  Serial1.print("$112\r");
                   break;
                   case 1:
                   Serial2.print("mode1\r");
+                  Serial1.print("$112\r");
                   // Statement(s)
                   break;
                   case 2:
                   Serial2.print("mode2\r");
+                  Serial1.print("$112\r");
                   // Statement(s)
                   break;
                   case 3:
                   Serial2.print("mode3\r");
+                  Serial1.print("$112\r");
                   // Statement(s)
                   break;
                   
@@ -1202,29 +1210,30 @@ void marcDuinoButtonPush(int type, int MD_func, int MP3_num, int LD_type, String
         {
           
           case 182:
-             Serial2.print("$87\r");
+             Serial1.print("$87\r");
              break;
              
           case 183:
-             //Serial1.print("$88\r");
-             Serial2.print("M23\r");
+             Serial1.print("$88\r");
+             //Serial2.print("M23\r");
 
              ///M23 Trigger
 
-            trig.write(160);
-            delay(200);
-            trig.write(90); 
+            ///Move to output section
+            //trig.write(160);
+            //delay(200);
+            //trig.write(90); 
              
              break;
           
           case 184:
-            // Serial1.print("$89\r");
-             Serial2.print("M32\r");
+            Serial1.print("$89\r");
+             //Serial2.print("M32\r");
              break;
 
           case 185:
-             //Serial1.print("$810\r");
-             Serial2.print("LOOK\r");
+             Serial1.print("$810\r");
+             //Serial2.print("LOOK\r");
              break;
              
           case 186:
@@ -2515,7 +2524,7 @@ void marcDuinoFoot()
         #ifdef SHADOW_VERBOSE      
              output += "FOOT: btnUP_PS";
         #endif
-        Serial2.print("M32\r");
+        Serial2.print("CB0\r");
        
         return;
         
@@ -2559,7 +2568,12 @@ void marcDuinoFoot()
         #ifdef SHADOW_VERBOSE      
              output += "FOOT: btnDown_PS";
         #endif
+       
        Serial2.print("M23\r");
+
+       trig.write(160);
+       delay(200);
+       trig.write(90);
        
         return;
         
@@ -2603,7 +2617,7 @@ void marcDuinoFoot()
         #ifdef SHADOW_VERBOSE      
              output += "FOOT: btnLeft_PS";
         #endif
-        Serial2.print("LOOK\r");
+        Serial2.print("CBD2\r");
        
         return;
         
@@ -2648,7 +2662,7 @@ void marcDuinoFoot()
              output += "FOOT: btnRight_PS";
         #endif
       
-       
+        Serial2.print("CBD3\r");
         return;
         
     }
