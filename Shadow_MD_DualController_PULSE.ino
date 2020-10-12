@@ -804,21 +804,21 @@ void ps3ToggleSettings(PS3BT* myPS3 = PS3NavFoot)
                   case 0:
                   // Statement(s)
                   Serial2.print("mode0\r");
-                  Serial1.print("$112\r");
+                  Serial1.print("$12\r");
                   break;
                   case 1:
                   Serial2.print("mode1\r");
-                  Serial1.print("$112\r");
+                  Serial1.print("$12\r");
                   // Statement(s)
                   break;
                   case 2:
                   Serial2.print("mode2\r");
-                  Serial1.print("$112\r");
+                  Serial1.print("$12\r");
                   // Statement(s)
                   break;
                   case 3:
                   Serial2.print("mode3\r");
-                  Serial1.print("$112\r");
+                  Serial1.print("$12\r");
                   // Statement(s)
                   break;
                   
@@ -1837,8 +1837,8 @@ void marcDuinoFoot()
         #ifdef SHADOW_VERBOSE      
              output += "FOOT: btnDown";
         #endif
-      
-       
+        
+       Serial2.print(":CL00\r");
         return;
        }
     }
