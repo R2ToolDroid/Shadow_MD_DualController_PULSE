@@ -77,6 +77,23 @@ void ProzessComando() {
       Serial1.print(cmd);
       Serial1.print("\r");
     }
-    
+
+     if (cmd.startsWith("#")) ///Dome MD Command send to DOme
+    {
+      #ifdef SHADOW_DEBUG
+            output += "Dome Sound Command from Serial\r\n";
+          #endif 
+      Serial1.print(cmd);
+      Serial1.print("\r");
+    }
+
+     if (cmd.startsWith("*")) ///Dome MD Command send to DOme
+    {
+      #ifdef SHADOW_DEBUG
+            output += "Dome Sound Command from Serial\r\n";
+          #endif 
+      Serial1.print(cmd);
+      Serial1.print("\r");
+    }
     
 }
