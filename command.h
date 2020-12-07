@@ -78,7 +78,7 @@ void ProzessComando() {
       Serial1.print("\r");
     }
 
-     if (cmd.startsWith("#")) ///Dome MD Command send to DOme
+     if (cmd.startsWith("#")) ///Front Skin Command
     {
       #ifdef SHADOW_DEBUG
             output += "Dome Sound Command from Serial\r\n";
