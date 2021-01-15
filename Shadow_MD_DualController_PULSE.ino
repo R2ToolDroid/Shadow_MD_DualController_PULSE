@@ -196,7 +196,6 @@ void setup()
 
     pinMode(59, OUTPUT); /// MODE Trigger Domecontrol
     digitalWrite(59, HIGH); 
-    
 
     DomeServo.write(90);
     //Setup for Serial1:: MarcDuino Dome Control Board
@@ -223,6 +222,9 @@ void loop()
     #endif
 
     //LOOP through functions from highest to lowest priority.
+
+    //Serial.print("MODE =");
+    //Serial.println(mode);
 
     if ( !readUSB() )
     {
@@ -789,9 +791,7 @@ void ps3ToggleSettings(PS3BT* myPS3 = PS3NavFoot)
     if(myPS3->getButtonPress(L2) && myPS3->getButtonClick(L3))
     {        
 
-          #ifdef SHADOW_DEBUG
-            output += "Dome MODE plus \r\n";
-          #endif
+          
           
           //digitalWrite(59, LOW); 
           //delay(1000);
@@ -827,7 +827,12 @@ void ps3ToggleSettings(PS3BT* myPS3 = PS3NavFoot)
                   // Statement(s)
                   break; // Wird nicht benötigt, wenn Statement(s) vorhanden sind
                 }
-         
+                
+         #ifdef SHADOW_DEBUG
+            output += "Dome MODE plus = ";
+            output += mode;
+            output += "\r\n";
+          #endif
 
 
           
