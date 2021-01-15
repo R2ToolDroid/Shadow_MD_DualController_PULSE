@@ -196,6 +196,7 @@ void setup()
 
     pinMode(59, OUTPUT); /// MODE Trigger Domecontrol
     digitalWrite(59, HIGH); 
+    
 
     DomeServo.write(90);
     //Setup for Serial1:: MarcDuino Dome Control Board
