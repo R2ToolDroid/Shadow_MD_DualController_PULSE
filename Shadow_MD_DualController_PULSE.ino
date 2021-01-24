@@ -99,10 +99,25 @@ BTD Btd(&Usb);
 PS3BT *PS3NavFoot=new PS3BT(&Btd);
 PS3BT *PS3NavDome=new PS3BT(&Btd);
 
+/////Setup for Servo Input Roboteq|Dome Control|232|Gripper
+
+
 Servo trig; // Servo Trigger 232 system
 Servo DomeServo;  // create servo object to control a servo
 Servo Mpower; ///Motor Power
 Servo Mdir;  ////Motor Directio
+
+Servo GripPitch; ///PIN26
+Servo GripRoll; ///PIN 27
+
+// functional connections
+#define CLAW_PWM 22 // Motor IA B PWM Speed
+#define CLAW_DIR 23 // Motor IB B Direction
+ 
+// the actual values for "fast" and "slow" depend on the motor
+#define PWM_SLOW 150  // arbitrary slow speed PWM duty cycle
+#define PWM_FAST 200 // arbitrary fast speed PWM duty cycle
+
 
 //Used for PS3 Fault Detection
 uint32_t msgLagTime = 0;
@@ -193,6 +208,11 @@ void setup()
     Mpower.attach(63); /// A9 MEGA Leg Motor A
     Mdir.attach(62); /// A8 MEGA Leg Motor B
     DomeServo.attach(61); /// A7 MEGA ??
+    GripPitch.attach(26); ///PIN 26
+    GripRoll.attach(27); ///PIN 27
+    
+    ///SETUP GRIPPER MOTOR CONTROL///
+
 
     pinMode(59, OUTPUT); /// MODE Trigger Domecontrol
     digitalWrite(59, HIGH); 
