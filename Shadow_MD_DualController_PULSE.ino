@@ -118,6 +118,9 @@ Servo GripRoll; ///PIN 27
 #define PWM_SLOW 150  // arbitrary slow speed PWM duty cycle
 #define PWM_FAST 200 // arbitrary fast speed PWM duty cycle
 
+#define GRIP_EXT 24 // PIN A
+#define GRIP_INT 25 // PIN B
+
 
 //Used for PS3 Fault Detection
 uint32_t msgLagTime = 0;
@@ -213,7 +216,20 @@ void setup()
     
     ///SETUP GRIPPER MOTOR CONTROL///
 
+    pinMode(GRIP_EXT, OUTPUT);
+    pinMode(GRIP_INT, OUTPUT);
 
+    analogWrite(GRIP_EXT, 0); //L298 0 0 is Stop
+    analogWrite(GRIP_INT, 0); //L298 0 0 is Stop
+
+
+    pinMode( CLAW_DIR, OUTPUT );
+    pinMode( CLAW_PWM, OUTPUT );
+    digitalWrite( CLAW_DIR, LOW );
+    digitalWrite( CLAW_PWM, LOW );
+
+
+    ///Up To Change to DEFINE
     pinMode(59, OUTPUT); /// MODE Trigger Domecontrol
     digitalWrite(59, HIGH); 
 
@@ -255,7 +271,9 @@ void loop()
     }
     
     footMotorDrive();
+    
     domeDrive();
+    
     marcDuinoDome();
     marcDuinoFoot();
     toggleSettings();

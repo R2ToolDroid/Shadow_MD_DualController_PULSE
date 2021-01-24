@@ -43,7 +43,18 @@
 //         Some place a 10K ohm resistor between S1 & GND on the SyRen 10 itself
 //
 // =======================================================================================
-//
+//  These libraries consist of the PS3BT and PS3USB. These libraries allows you to use a Dualshock 3, Navigation or a
+//  Motion controller with the USB Host Shield both via Bluetooth and USB.
+//  In order to use your Playstation controller via Bluetooth you have to set the Bluetooth address of the dongle 
+//  internally to your PS3 Controller. This can be achieved by first plugging in the Bluetooth dongle and wait a few seconds. 
+//  Now plug in the controller via USB and wait until the LEDs start to flash. 
+//  The library has now written the Bluetooth address of the dongle to the PS3 controller.
+//  
+//  Finally simply plug in the Bluetooth dongle again and press PS on the PS3 controller. 
+//  After a few seconds it should be connected to the dongle and ready to use.
+//  Note: You will have to plug in the Bluetooth dongle before connecting the controller, as the library needs to read the address of the dongle.
+//  Alternatively you could set it in code like so: PS3BT.ino::L20.
+//  For more information about the PS3 protocol see the official wiki: https://github.com/felis/USB_Host_Shield_2.0/wiki/PS3-Information.
 // ---------------------------------------------------------------------------------------
 //                        General User Settings
 // ---------------------------------------------------------------------------------------
