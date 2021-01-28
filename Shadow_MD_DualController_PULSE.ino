@@ -76,6 +76,7 @@ int DP10_o_time = 0;
 //                          Variables
 // ---------------------------------------------------------------------------------------
 
+long previousMillis = millis();
 long previousDomeMillis = millis();
 long previousFootMillis = millis();
 long previousMarcDuinoMillis = millis();
@@ -110,6 +111,9 @@ Servo Mdir;  ////Motor Directio
 Servo GripPitch; ///PIN26
 Servo GripRoll; ///PIN 27
 
+int GpPpos = 90;
+int GpRpos = 90;
+
 // functional connections
 #define CLAW_PWM 22 // Motor IA B PWM Speed
 #define CLAW_DIR 23 // Motor IB B Direction
@@ -121,6 +125,8 @@ Servo GripRoll; ///PIN 27
 #define GRIP_EXT 24 // PIN A
 #define GRIP_INT 25 // PIN B
 
+int SRampX = 0;
+int SRampY = 0;
 
 //Used for PS3 Fault Detection
 uint32_t msgLagTime = 0;
@@ -209,8 +215,11 @@ void setup()
     trig.attach(60); /// A6 Trigger 232 
     
     Mpower.attach(63); /// A9 MEGA Leg Motor A
+    
     Mdir.attach(62); /// A8 MEGA Leg Motor B
-    DomeServo.attach(61); /// A7 MEGA ??
+    
+    DomeServo.attach(61); /// A7 61 MEGA ??
+    
     GripPitch.attach(26); ///PIN 26
     GripRoll.attach(27); ///PIN 27
     
@@ -245,6 +254,7 @@ void setup()
 }
 
 #include "command.h"
+#include "workinggripper.h"
 
 // =======================================================================================
 //           Main Program Loop - This is the recurring check loop for entire sketch
@@ -269,10 +279,14 @@ void loop()
       Serial1.print("SHADOW_ERROR\r");
       return;
     }
+
+    if (mode < 3){
+        footMotorDrive();
+        domeDrive();
+    } else {
+        working();
+    }
     
-    footMotorDrive();
-    
-    domeDrive();
     
     marcDuinoDome();
     marcDuinoFoot();
@@ -386,7 +400,7 @@ boolean ps3FootMotorDrive(PS3BT* myPS3 = PS3NavFoot)
           {
 
             stickSpeed = (map(joystickPosition, 0, 255, -drivespeed2, drivespeed2));  
-            pulseSpeed = (map(joystickPosition, 0, 255, 110, 70));  
+            pulseSpeed = (map(joystickPosition, 0, 255, 130, 50));  
             
           } else 
           {
@@ -412,11 +426,11 @@ boolean ps3FootMotorDrive(PS3BT* myPS3 = PS3NavFoot)
                     }
                     
                     #ifdef SHADOW_VERBOSE      
-                        output += "ZERO FAST RAMP: footSpeed: ";
-                        output += footDriveSpeed;
-                        output += "\nStick Speed: ";
-                        output += stickSpeed;
-                        output += "\n\r";
+                        //output += "ZERO FAST RAMP: footSpeed: ";
+                        //output += footDriveSpeed;
+                        //output += "\nStick Speed: ";
+                        //output += stickSpeed;
+                        //output += "\n\r";
                     #endif
                     
                 } else if (abs(footDriveSpeed) > 20)
@@ -430,10 +444,10 @@ boolean ps3FootMotorDrive(PS3BT* myPS3 = PS3NavFoot)
                     }
                     
                     #ifdef SHADOW_VERBOSE      
-                        output += "ZERO MID RAMP: footSpeed: ";
-                        output += footDriveSpeed;
-                        output += "\nStick Speed: ";
-                        output += stickSpeed;
+                        //output += "ZERO MID RAMP: footSpeed: ";
+                        //output += footDriveSpeed;
+                        //output += "\nStick Speed: ";
+                        //output += stickSpeed;
 
                         output += "\nPulse Speed: ";
                         output += pulseSpeed;
@@ -461,10 +475,10 @@ boolean ps3FootMotorDrive(PS3BT* myPS3 = PS3NavFoot)
                     footDriveSpeed+=ramping;
                       
                     #ifdef SHADOW_VERBOSE      
-                        output += "RAMPING UP: footSpeed: ";
-                        output += footDriveSpeed;
-                        output += "\nStick Speed: ";
-                        output += stickSpeed;
+                      //  output += "RAMPING UP: footSpeed: ";
+                      //  output += footDriveSpeed;
+                       // output += "\nStick Speed: ";
+                      //  output += stickSpeed;
 
                         output += "\nPulse Speed: ";
                         output += pulseSpeed;
@@ -485,10 +499,10 @@ boolean ps3FootMotorDrive(PS3BT* myPS3 = PS3NavFoot)
                     footDriveSpeed-=ramping;
                       
                     #ifdef SHADOW_VERBOSE      
-                        output += "RAMPING DOWN: footSpeed: ";
-                        output += footDriveSpeed;
-                        output += "\nStick Speed: ";
-                        output += stickSpeed;
+                       // output += "RAMPING DOWN: footSpeed: ";
+                       // output += footDriveSpeed;
+                       // output += "\nStick Speed: ";
+                       // output += stickSpeed;
 
                         output += "\nPulse Speed: ";
                         output += pulseSpeed;
@@ -532,10 +546,10 @@ boolean ps3FootMotorDrive(PS3BT* myPS3 = PS3NavFoot)
               {
                 
                   #ifdef SHADOW_VERBOSE      
-                    output += "Motor: FootSpeed: ";
-                    output += footDriveSpeed;
-                    output += "\nTurnnum: ";              
-                    output += turnnum;
+                   // output += "Motor: FootSpeed: ";
+                  //  output += footDriveSpeed;
+                  //  output += "\nTurnnum: ";              
+                  //  output += turnnum;
 
                     output += "\nPulse Turn: ";
                         output += pulseTurn;

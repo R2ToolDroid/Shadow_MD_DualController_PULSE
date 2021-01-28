@@ -38,25 +38,181 @@
 *   
 *   
 *   
- */
+*/
 
-
+/// ClawM("O"); Open
+/// ClawM("C"); Close
+/// ClawM("x"); Stop
 void ClawM(char d)
 {
-  if(d =='R'){
-    digitalWrite(A1A,LOW);
-    digitalWrite(A1B,HIGH); 
-  }else if (d =='L'){
-    digitalWrite(A1A,HIGH);
-    digitalWrite(A1B,LOW);    
+  if(d =='O'){
+    digitalWrite(CLAW_DIR,LOW);
+    digitalWrite(CLAW_PWM,HIGH); 
+  }else if (d =='C'){
+    digitalWrite(CLAW_DIR,HIGH);
+    digitalWrite(CLAW_PWM,HIGH);    
   }else{
-    //Robojax.com L9110 Motor Tutorial
     // Turn motor OFF
-    digitalWrite(A1A,LOW);
-    digitalWrite(A1B,LOW);    
+    digitalWrite(CLAW_DIR,LOW);
+    digitalWrite(CLAW_PWM,LOW);    
   }
 }// motorA end
 
+
+/// ExtM("E"); Extend
+/// ExtM("I"); Put IN
+/// ExtM("x"); Stop
+void ExtM(char d)
+{
+  if(d =='E'){
+    analogWrite(GRIP_EXT, 150); 
+    analogWrite(GRIP_INT, 0); 
+  }else if (d =='I'){
+    analogWrite(GRIP_EXT, 0); 
+    analogWrite(GRIP_INT, 150); 
+  }else{
+    // Turn motor OFF
+    analogWrite(GRIP_EXT, 0); 
+    analogWrite(GRIP_INT, 0);     
+  }
+}// motorB end
+
+
+boolean working(PS3BT* myPS3 = PS3NavFoot){
+
+  // ARM movement:
+  // Stick |||| Left -> Extend
+  // Stick |||| Rright -> Pull IN
+  // Stick |||| UP -> Arm up
+  // Stick |||| DOWN -> Arm down
+  /////////CLAW
+  // L2 + Stick |||| Left -> Rotate left
+  // L2 + Stick |||| Right -> Rotate right
+  // L2 + Stick |||| UP -> Claw Open
+  // L2 + Stick |||| DOWN -> Claw Close
+  // GpPpos = 90;
+  // GpRpos = 90;
+
+  //Flood control prevention
+  //if (currentMillis - previousMillis >= 500) 
+  
+  //previousMillis = currentMillis;
+
+  ///Stop all Motors:
+  ExtM("x");
+  ClawM("x");
+  
+  if (PS3NavFoot->PS3NavigationConnected) {  ///ps3FootMotorDrive(PS3NavFoot);
+
+        if(myPS3->getButtonPress(PS))
+        {
+          Serial.print("MODE ..");
+          Serial.println(mode);
+         }
+
+    if (myPS3->getButtonPress(L2)){
+
+      int joystickPositionGy = myPS3->getAnalogHat(LeftHatY);
+      int joystickPositionGx = myPS3->getAnalogHat(LeftHatX);
+
+      if (joystickPositionGy <= 50) {ClawM("O");Serial.println("Claw Open");}
+      if (joystickPositionGy >= 200) {ClawM("C");Serial.println("Caw Close");}
+      
+      if (SRampX <= -1000) SRampX = -1000;
+      if (SRampX >= 1000) SRampX = 1000;
+      GpRpos = map( SRampX, -1000, 1000, 180, 00);
+
+      if (joystickPositionGx <= 30) {
+       
+        SRampX--;     
+        output = "Left :";
+        output += GpRpos;
+        
+        
+       GripRoll.write(GpRpos);
+      }
+      if (joystickPositionGx >= 160){
+       
+          //GpPpos++;
+          SRampX++;
+          
+          //Serial.print("Right : ");
+          //Serial.println(GpRpos);
+          output = "Right : ";
+          output += GpRpos;
+          
+          GripRoll.write(GpRpos);
+          
+      }
+      
+      /*
+      output = "CLAW Y =";
+      output += joystickPositionGy;
+      output += " X =";
+      output += joystickPositionGx;
+      */
+      
+    } else {
+      
+
+      int joystickPositionGy = myPS3->getAnalogHat(LeftHatY);
+      int joystickPositionGx = myPS3->getAnalogHat(LeftHatX);
+
+      
+
+      if (joystickPositionGx <= 50){ ExtM("E");Serial.println("Extend");}
+      if (joystickPositionGx >= 200){ ExtM("I");Serial.println("Pull In");}
+
+
+      if (SRampY <= -1000) SRampY = -1000;
+      if (SRampY >= 1000) SRampY = 1000;
+
+      
+
+      
+      GpPpos = map( SRampY, -1000, 1000, 180, 00);
+
+      
+      ////Arm to Top
+      if (joystickPositionGy <= 30) {
+        
+        SRampY--;     
+        Serial.print("UP :");
+        Serial.println(GpPpos);
+        
+       GripPitch.write(GpPpos);
+      }
+
+      ////Arm to Bottom
+      if (joystickPositionGy >= 160){
+       
+          //GpPpos++;
+          SRampY++;
+          
+          Serial.print("DOWN : ");
+          Serial.println(GpPpos);
+          GripPitch.write(GpPpos);
+          
+      }
+
+
+      
+     
+
+      /*
+      output = "ARM Y =";
+      output += joystickPositionGy;
+      output += " X =";
+      output += joystickPositionGx;
+      */
+     
+    }
+
+  
+}
+         
+  
+}
 
 
  

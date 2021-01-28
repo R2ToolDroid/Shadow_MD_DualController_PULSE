@@ -67,7 +67,7 @@ String PS3ControllerBackupDomeMAC = "XX";  //Set to the MAC Address of your BACK
 
 String cmd ;/// Serial Data from Input Terminal Serial2 MASTER BODY CONTROLLER
 
-int mode = 0; // Default Mode  0 = Input Coin Shadow CPU NEXTION Sound RAND Dome RAND
+int mode = 3; // Default Mode  0 = Input Coin Shadow CPU NEXTION Sound RAND Dome RAND
               // RC Mode       1 = Input RC
               // RC Show       2 = HUMAN
               //               3 = SERVICE
@@ -83,6 +83,8 @@ byte domespeed = 100;    // If using a speed controller for the dome, sets the t
 
 byte ramping = 1;        // Ramping- the lower this number the longer R2 will take to speedup or slow down,
                          // change this by increments of 1
+
+                         
 
 byte joystickFootDeadZoneRange = 15;  // For controllers that centering problems, use the lowest number with no drift
 byte joystickDomeDeadZoneRange = 10;  // For controllers that centering problems, use the lowest number with no drift
