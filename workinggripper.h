@@ -40,23 +40,6 @@
 *   
 */
 
-/// ClawM("O"); Open
-/// ClawM("C"); Close
-/// ClawM("x"); Stop
-void ClawM(char d)
-{
-  if(d =='O'){
-    digitalWrite(CLAW_DIR,LOW);
-    digitalWrite(CLAW_PWM,HIGH); 
-  }else if (d =='C'){
-    digitalWrite(CLAW_DIR,HIGH);
-    digitalWrite(CLAW_PWM,HIGH);    
-  }else{
-    // Turn motor OFF
-    digitalWrite(CLAW_DIR,LOW);
-    digitalWrite(CLAW_PWM,LOW);    
-  }
-}// motorA end
 
 
 /// ExtM("E"); Extend
@@ -99,8 +82,8 @@ boolean working(PS3BT* myPS3 = PS3NavFoot){
   //previousMillis = currentMillis;
 
   ///Stop all Motors:
-  ExtM("x");
-  ClawM("x");
+  //ExtM("x");
+  //ClawM("x");
   
   if (PS3NavFoot->PS3NavigationConnected) {  ///ps3FootMotorDrive(PS3NavFoot);
 
@@ -114,9 +97,36 @@ boolean working(PS3BT* myPS3 = PS3NavFoot){
 
       int joystickPositionGy = myPS3->getAnalogHat(LeftHatY);
       int joystickPositionGx = myPS3->getAnalogHat(LeftHatX);
+      
 
-      if (joystickPositionGy <= 50) {ClawM("O");Serial.println("Claw Open");}
-      if (joystickPositionGy >= 200) {ClawM("C");Serial.println("Caw Close");}
+     
+
+      if (joystickPositionGy <= 120) { //50
+        //Serial.println( "Hand Auf..." );
+
+       
+        analogWrite( CLAW_DIR, 150 ); // direction = forward
+        digitalWrite( CLAW_PWM, LOW ); // PWM speed = fast
+        
+        }
+
+        
+      if (joystickPositionGy >= 136) { //200     
+        
+        //Serial.println( "Zu.." );
+        digitalWrite( CLAW_DIR, LOW );
+        analogWrite( CLAW_PWM, 150 );
+        }
+
+        
+       if((joystickPositionGy <= 136) && ( joystickPositionGy >= 120)) 
+       {
+       //Serial.println( "Stop.." );
+       digitalWrite(CLAW_DIR,LOW);
+       digitalWrite(CLAW_PWM,LOW);  
+       
+       }
+      
       
       if (SRampX <= -1000) SRampX = -1000;
       if (SRampX >= 1000) SRampX = 1000;

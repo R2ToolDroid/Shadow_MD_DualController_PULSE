@@ -115,8 +115,8 @@ int GpPpos = 90;
 int GpRpos = 90;
 
 // functional connections
-#define CLAW_PWM 22 // Motor IA B PWM Speed
-#define CLAW_DIR 23 // Motor IB B Direction
+#define CLAW_PWM 22 // Motor IA B PWM Speed 22?
+#define CLAW_DIR 23 // Motor IB B Direction  23 ?
  
 // the actual values for "fast" and "slow" depend on the motor
 #define PWM_SLOW 150  // arbitrary slow speed PWM duty cycle
