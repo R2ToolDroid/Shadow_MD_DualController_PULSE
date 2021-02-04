@@ -115,15 +115,15 @@ int GpPpos = 90;
 int GpRpos = 90;
 
 // functional connections
-#define CLAW_PWM 22 // Motor IA B PWM Speed 22?
-#define CLAW_DIR 23 // Motor IB B Direction  23 ?
+#define CLAW_PWM 22 // 22 Motor IA B PWM Speed 22?
+#define CLAW_DIR 23 // 23 Motor IB B Direction  23 ?
  
 // the actual values for "fast" and "slow" depend on the motor
 #define PWM_SLOW 150  // arbitrary slow speed PWM duty cycle
 #define PWM_FAST 200 // arbitrary fast speed PWM duty cycle
 
-#define GRIP_EXT 24 // PIN A
-#define GRIP_INT 25 // PIN B
+#define GRIP_EXT 24 // 24 PIN A
+#define GRIP_INT 29 // 25 PIN B
 
 int SRampX = 0;
 int SRampY = 0;
@@ -228,8 +228,8 @@ void setup()
     pinMode(GRIP_EXT, OUTPUT);
     pinMode(GRIP_INT, OUTPUT);
 
-    analogWrite(GRIP_EXT, 0); //L298 0 0 is Stop
-    analogWrite(GRIP_INT, 0); //L298 0 0 is Stop
+    digitalWrite(GRIP_EXT, LOW); //L298 0 0 is Stop
+    digitalWrite(GRIP_INT, LOW); //L298 0 0 is Stop
 
 
     pinMode( CLAW_DIR, OUTPUT );

@@ -101,7 +101,7 @@ boolean working(PS3BT* myPS3 = PS3NavFoot){
 
      
 
-      if (joystickPositionGy <= 120) { //50
+      if (joystickPositionGy <= 50) { //50
         //Serial.println( "Hand Auf..." );
 
        
@@ -111,7 +111,7 @@ boolean working(PS3BT* myPS3 = PS3NavFoot){
         }
 
         
-      if (joystickPositionGy >= 136) { //200     
+      if (joystickPositionGy >= 200) { //200     
         
         //Serial.println( "Zu.." );
         digitalWrite( CLAW_DIR, LOW );
@@ -119,7 +119,7 @@ boolean working(PS3BT* myPS3 = PS3NavFoot){
         }
 
         
-       if((joystickPositionGy <= 136) && ( joystickPositionGy >= 120)) 
+       if((joystickPositionGy <= 200) && ( joystickPositionGy >= 50)) 
        {
        //Serial.println( "Stop.." );
        digitalWrite(CLAW_DIR,LOW);
@@ -132,7 +132,7 @@ boolean working(PS3BT* myPS3 = PS3NavFoot){
       if (SRampX >= 1000) SRampX = 1000;
       GpRpos = map( SRampX, -1000, 1000, 180, 00);
 
-      if (joystickPositionGx <= 30) {
+      if (joystickPositionGx <= 50) {
        
         SRampX--;     
         output = "Left :";
@@ -141,7 +141,7 @@ boolean working(PS3BT* myPS3 = PS3NavFoot){
         
        GripRoll.write(GpRpos);
       }
-      if (joystickPositionGx >= 160){
+      if (joystickPositionGx >= 200){
        
           //GpPpos++;
           SRampX++;
@@ -170,44 +170,69 @@ boolean working(PS3BT* myPS3 = PS3NavFoot){
 
       
 
-      if (joystickPositionGx <= 50){ ExtM("E");Serial.println("Extend");}
-      if (joystickPositionGx >= 200){ ExtM("I");Serial.println("Pull In");}
+      ///if (joystickPositionGx >= 200){ ExtM("I");Serial.println("Pull In");}
 
 
-      if (SRampY <= -1000) SRampY = -1000;
-      if (SRampY >= 1000) SRampY = 1000;
-
-      
+      if (SRampY <= -10000) SRampY = -10000;
+      if (SRampY >= 10000) SRampY = 10000;
 
       
-      GpPpos = map( SRampY, -1000, 1000, 180, 00);
+
+      
+      GpPpos = map( SRampY, -10000, 10000, 180, 00);
 
       
       ////Arm to Top
-      if (joystickPositionGy <= 30) {
+      if (joystickPositionGy <= 50) {
         
         SRampY--;     
-        Serial.print("UP :");
-        Serial.println(GpPpos);
+        //Serial.print("UP :");
+        //Serial.println(GpPpos);
         
        GripPitch.write(GpPpos);
       }
 
       ////Arm to Bottom
-      if (joystickPositionGy >= 160){
+      if (joystickPositionGy >= 200){
        
           //GpPpos++;
           SRampY++;
           
-          Serial.print("DOWN : ");
-          Serial.println(GpPpos);
+         // Serial.print("DOWN : ");
+         // Serial.println(GpPpos);
           GripPitch.write(GpPpos);
           
       }
+        /**EXTEND and RETURN */
+      if (joystickPositionGx <= 50) { //50
+        //Serial.println( "EXTEND.." );
 
+        analogWrite(GRIP_EXT, 200); 
+        digitalWrite(GRIP_INT, LOW); 
+       
+        //analogWrite( CLAW_DIR, 150 ); // direction = forward
+        //digitalWrite( CLAW_PWM, LOW ); // PWM speed = fast
+        
+        }
 
+        
+      if (joystickPositionGx >= 200) { //200     
+        
+        //Serial.println( "RETURN.." );
+        digitalWrite(GRIP_EXT, LOW); 
+        analogWrite(GRIP_INT, 200); 
+        }
+
+        
+       if((joystickPositionGx <= 200) && ( joystickPositionGx >= 50)) 
+       {
+       //Serial.println( "Stop.." );
+       digitalWrite(GRIP_EXT, LOW); 
+       digitalWrite(GRIP_INT, LOW); 
+       
+       }
       
-     
+    
 
       /*
       output = "ARM Y =";
